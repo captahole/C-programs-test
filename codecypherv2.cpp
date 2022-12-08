@@ -7,7 +7,7 @@
 #include <cctype> 
 using namespace std;
 
-// menu and selection
+// menu and selection ok
 void display_menu();
 char get_selection();
 void handle_quit();
