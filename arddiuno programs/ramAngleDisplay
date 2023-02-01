@@ -1,0 +1,103 @@
+/* Angle and Roll moitor for RAM 2500 truck
+    EH V1 Jan 2023
+*/
+#include <Arduino.h>
+#include <U8g2lib.h>
+#include <SPI.h>
+#include "Wire.h"
+#include <MPU6050_light.h>
+U8X8_SH1107_SEEED_128X128_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE);
+MPU6050 mpu(Wire);
+unsigned long timer = 0;
+void calibration_menu();
+void sensor_status();
+
+void setup() {
+
+  u8x8.begin();
+  u8x8.setPowerSave(0);
+  u8x8.clear();
+  Serial.begin(9600);
+  Wire.begin();
+
+  //byte status = mpu.begin();
+  //Serial.print(F("MPU6050 status: "));
+  //Serial.println(status);
+  //while (status != 0) { }
+
+  sensor_status();
+  // display
+  //byte status = mpu.begin();
+  //u8x8.setFont(u8x8_font_px437wyse700b_2x2_r);
+  //u8x8.setCursor(0, 0);
+  //u8x8.print(F("MPU6050 status: "));
+  //u8x8.println(status);
+  //while (status != 0) { }
+
+  //Serial.println(F("While calculating the offsets value, do not move the MPU6050 sensor"));
+  //delay(1000);
+  // mpu.upsideDownMounting = true; // Comment on this line if MPU6050 is installed backwards
+  mpu.calcOffsets();
+  //Serial.println("Done!\n");
+
+  calibration_menu();
+  // display
+  //u8x8.setCursor(0, 9);
+  //u8x8.println(F("Calibrating, DO NOT MOVE"));
+  //delay(1000);
+  //u8x8.println("Done!\n");
+}
+
+void loop() {
+
+  mpu.update();
+
+  if ((millis() - timer) > 1000) { // print data every 10ms
+
+    u8x8.setFont(u8x8_font_px437wyse700b_2x2_r);
+    u8x8.drawString(0, 7, "Roll: ");
+    u8x8.setCursor(0, 9);
+    u8x8.println(mpu.getAngleX(), 0);
+    if (mpu.getAngleX() >= 45) {
+      u8x8.drawString(0, 7, "DANGER");
+    }
+    if (mpu.getAngleX() <= -45) {
+      u8x8.drawString(0, 7, "DANGER");
+    }
+    if (mpu.getAngleX() > 1) {
+      u8x8.drawString(10, 9, "R");
+    }
+    if (mpu.getAngleX() < 1) {
+      u8x8.drawString(10, 9, "L");
+    }
+
+    u8x8.setFont(u8x8_font_px437wyse700b_2x2_r);
+    u8x8.drawString(0, 0, "Angle: ");
+    u8x8.setCursor(0, 3);
+    u8x8.println(mpu.getAngleY(), 0);
+    if (mpu.getAngleY() >= 45) {
+      u8x8.drawString(0, 0, "DANGER");
+    }
+    if (mpu.getAngleY() <= -45) {
+      u8x8.drawString(0, 0, "DANGER");
+    }
+
+    timer = millis();
+  }
+}
+
+void calibration_menu() {
+  u8x8.setCursor(0, 0);
+  u8x8.println(F("Calibrating, DO NOT MOVE"));
+  delay(1000);
+  u8x8.println("Done!\n");
+  u8x8.clear();
+}
+void sensor_status() {
+  byte status = mpu.begin();
+  u8x8.setFont(u8x8_font_px437wyse700b_2x2_r);
+  u8x8.setCursor(0, 0);
+  u8x8.print(F("MPU6050 status: "));
+  u8x8.println(status);
+  while (status != 0) { }
+}

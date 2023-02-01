@@ -14,6 +14,7 @@ void add_num(double);
 void sub_num(double);
 void multiply(double);
 void divide(double);
+void permiter(double);
 
 int main()
 {
@@ -47,6 +48,7 @@ int main()
     cout << endl;
     return 0;
 }
+
 void display_menu()
 {
     cout << "\nIan's Math Calculator \n";
@@ -73,33 +75,61 @@ void handle_unknown()
 }
 void add_num(double)
 {
-    double a, b, total;
+    double a{}, b{}, total{};
     cout << "Enter 2 numbers ";
-    cin >> a >> b;
-    total = a + b;
-    cout << "= " << total << endl;
+    while (true) {
+        if (cin >> a >> b){
+            total = a + b;
+            cout << "= " << total << endl;
+            break;
+    }   else {
+            cout << "Try agin! Enter a valid integer value!\n";
+            cin.clear();
+        }
+    }
 }
 void sub_num(double)
 {
-    double a, b, total;
+    double a{}, b{}, total{};
     cout << "Enter 2 numbers ";
-    cin >> a >> b;
-    total = a - b;
-    cout << "= " << total << endl;
+    while (true) {
+        if (cin >> a >> b){
+            total = a - b;
+            cout << "= " << total << endl;
+            break;
+    }   else {
+            cout << "Try agin! Enter a valid integer value!\n";
+            cin.clear();
+        }
+    }
 }
 void multiply(double)
 {
-    double a, b, total;
+    double a{}, b{}, total{};
     cout << "Enter 2 numbers ";
-    cin >> a >> b;
-    total = a * b;
-    cout << "= " << total << endl; 
+    while (true) {
+        if (cin >> a >> b){
+            total = a * b;
+            cout << "= " << total << endl;
+            break;
+    }   else {
+            cout << "Try agin! Enter a valid integer value!\n";
+            cin.clear();
+        }
+    }
 }
 void divide(double)
 {
-    double a, b, total;
+    double a{}, b{}, total{};
     cout << "Enter 2 numbers ";
-    cin >> a >> b;
-    total = a / b;
-    cout << "= " << total << endl;  
+    while (true) {
+        if (cin >> a >> b){
+            total = a / b;
+            cout << "= " << total << endl;
+            break;
+    }   else {
+            cout << "Try agin! Enter a valid integer value!\n";
+            cin.clear();
+        }
+    } 
 }
